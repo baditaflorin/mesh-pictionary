@@ -1,6 +1,3 @@
-/* App-local styles. Mesh chrome (settings drawer, self-ref bar) is provided by
- * @baditaflorin/mesh-common/styles.css imported in main.tsx. */
-
 :root {
   color-scheme: dark;
 }
@@ -19,33 +16,218 @@ body,
   background: var(--mesh-bg);
   color: var(--mesh-fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  -webkit-tap-highlight-color: transparent;
 }
 
-.feature-placeholder {
-  padding: 6rem 1.5rem 2rem;
-  text-align: center;
+.pic-screen {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 4.5rem 1.25rem 6rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
-.feature-placeholder h1 {
+.pic-header h1 {
   font-size: 1.6rem;
-  margin: 0;
+  margin: 0 0 0.25rem;
   color: var(--mesh-accent);
 }
 
-.feature-placeholder p {
-  max-width: 32rem;
+.pic-status {
   margin: 0;
-  opacity: 0.85;
-  line-height: 1.5;
+  opacity: 0.7;
+  font-size: 0.9rem;
 }
 
-.feature-status {
+.pic-name input {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--mesh-fg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.4rem;
+}
+
+.pic-lobby {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.5rem;
+}
+
+.pic-lobby p {
+  margin: 0 0 0.6rem;
+  opacity: 0.8;
+}
+
+.pic-claim {
+  padding: 0.7rem 1.4rem;
+  background: var(--mesh-accent);
+  color: #0e1117;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.pic-claim:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pic-word {
+  padding: 0.7rem 1rem;
+  background: rgba(244, 63, 94, 0.16);
+  border: 1px solid var(--mesh-accent);
+  border-radius: 0.4rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.pic-word-locked {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.pic-word code {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, monospace;
   font-size: 0.85rem;
-  opacity: 0.6;
-  font-variant-numeric: tabular-nums;
+}
+
+.pic-tools {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pic-color {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.pic-color.is-active {
+  border-color: var(--mesh-fg);
+}
+
+.pic-end {
+  margin-left: auto;
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  color: var(--mesh-fg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.pic-canvas {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 13/9;
+  background: #0e1117;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  touch-action: none;
+  display: block;
+}
+
+.pic-reveal {
+  padding: 0.8rem 1rem;
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid var(--mesh-accent);
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.pic-reveal p {
+  margin: 0.2rem 0;
+}
+
+.pic-verify.is-ok {
+  color: #4ade80;
+}
+
+.pic-verify.is-bad {
+  color: #f87171;
+}
+
+.pic-newround {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--mesh-accent);
+  color: #0e1117;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pic-guess {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.pic-guess input {
+  flex: 1;
+  padding: 0.55rem 0.85rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--mesh-fg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.4rem;
+}
+
+.pic-guess button {
+  padding: 0.5rem 1rem;
+  background: var(--mesh-accent);
+  color: #0e1117;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pic-guess button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pic-guesses {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.45rem;
+  padding: 0.6rem 0.85rem;
+}
+
+.pic-section-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.55;
+  margin: 0 0 0.4rem;
+}
+
+.pic-guesses ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pic-guesses li.is-correct {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.pic-empty {
+  opacity: 0.5;
+  font-style: italic;
+  margin: 0;
 }
