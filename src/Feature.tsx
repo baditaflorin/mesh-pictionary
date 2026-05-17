@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  MeshNameInput,
   commit,
   randomSalt,
   verifyReveal,
@@ -235,15 +236,13 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
         </p>
       </header>
 
-      <div className="pic-name">
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="your name"
-          maxLength={48}
-          aria-label="your name"
-        />
-      </div>
+      <MeshNameInput
+        className="pic-name"
+        value={name}
+        onChange={setName}
+        placeholder="your name"
+        maxLength={48}
+      />
 
       {phase === "lobby" && (
         <div className="pic-lobby">
