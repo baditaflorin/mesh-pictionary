@@ -3,14 +3,13 @@ import {
   MeshNameInput,
   commit,
   randomSalt,
+  useSharedStrokes,
   verifyReveal,
   type MeshConfig,
   type YRoom,
 } from "@baditaflorin/mesh-common";
 
 type Props = { room: YRoom | null; config: MeshConfig };
-
-type Stroke = { peerId: string; color: string; points: number[] };
 
 const NAME_KEY = (prefix: string) => `${prefix}:displayName`;
 const COLORS = ["#f43f5e", "#38bdf8", "#a3e635", "#fbbf24", "#a855f7", "#ffffff"];
@@ -54,27 +53,24 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawingRef = useRef(false);
   const currentStrokeRef = useRef<number[] | null>(null);
+  const draw = useSharedStrokes(room, { color, width: 3 });
 
   useEffect(() => {
     if (name) localStorage.setItem(NAME_KEY(config.storagePrefix), name);
   }, [name, config.storagePrefix]);
 
   useEffect(() => {
-    const strokes = room.doc.getArray<Stroke>("strokes");
     const meta = room.doc.getMap<string>("meta");
     const guesses = room.doc.getMap<{ name: string; text: string }>("guesses");
     const onChange = () => rerender((n) => n + 1);
-    strokes.observe(onChange);
     meta.observe(onChange);
     guesses.observe(onChange);
     return () => {
-      strokes.unobserve(onChange);
       meta.unobserve(onChange);
       guesses.unobserve(onChange);
     };
   }, [room]);
 
-  const strokes = room.doc.getArray<Stroke>("strokes");
   const meta = room.doc.getMap<string>("meta");
   const guesses = room.doc.getMap<{ name: string; text: string }>("guesses");
   const drawerId = meta.get("drawerId");
@@ -93,23 +89,9 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
     if (!ctx) return;
     ctx.fillStyle = "#0e1117";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.lineWidth = 3;
-    strokes.forEach((s) => {
-      ctx.strokeStyle = s.color;
-      ctx.beginPath();
-      const pts = s.points;
-      if (pts.length >= 2) {
-        ctx.moveTo(pts[0]!, pts[1]!);
-        for (let i = 2; i < pts.length; i += 2) {
-          ctx.lineTo(pts[i]!, pts[i + 1]!);
-        }
-      }
-      ctx.stroke();
-    });
+    draw.replay(ctx);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [room, strokes.length, phase]);
+  }, [room, draw.strokes.length, phase]);
 
   const claimDrawer = async () => {
     if (drawerId && drawerId !== room.peerId) return;
@@ -127,7 +109,7 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
       meta.set("phase", "drawing");
       meta.delete("revealedSalt");
       meta.delete("revealedWord");
-      strokes.delete(0, strokes.length);
+      draw.clear();
       guesses.forEach((_v, k) => guesses.delete(k));
     });
   };
@@ -161,7 +143,7 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
       meta.delete("revealedSalt");
       meta.delete("revealedWord");
       meta.set("phase", "lobby");
-      strokes.delete(0, strokes.length);
+      draw.clear();
       guesses.forEach((_v, k) => guesses.delete(k));
     });
   };
@@ -214,9 +196,7 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
       currentStrokeRef.current = null;
       return;
     }
-    if (currentStrokeRef.current.length >= 4) {
-      strokes.push([{ peerId: room.peerId, color, points: currentStrokeRef.current.slice() }]);
-    }
+    draw.add(currentStrokeRef.current, { color });
     drawingRef.current = false;
     currentStrokeRef.current = null;
   };
