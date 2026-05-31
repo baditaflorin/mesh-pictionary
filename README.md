@@ -1,7 +1,7 @@
 # mesh-pictionary
 
 [![pages](https://img.shields.io/badge/live-baditaflorin.github.io%2Fmesh-pictionary-f43f5e)](https://baditaflorin.github.io/mesh-pictionary/)
-[![version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/baditaflorin/mesh-pictionary/blob/main/package.json)
+[![version](https://img.shields.io/badge/version-0.1.1-blue)](https://github.com/baditaflorin/mesh-pictionary/blob/main/package.json)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 > Mesh-synced pictionary with commit-reveal word lock, no account
